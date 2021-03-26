@@ -22,14 +22,7 @@ if __name__ == '__main__':
                             2).sum() / 1000, 2))
                          for index in range(0, len(time_index)) if index < len(time_index) - 1]
                         result[data[row_name].columns.values[0].split(' ')[0]] = result_array
-                    if not os.path.exists(
-                            abs_path + "\\hour_csv\\" + os.path.split(os.path.split(f_path)[0])[1] + "\\" +
-                            os.path.split(
-                                f_path)[1]):
-                        os.makedirs(
-                            abs_path + "\\hour_csv\\" + os.path.split(os.path.split(f_path)[0])[1] + "\\" +
-                            os.path.split(
-                                f_path)[1])
-                    pd.DataFrame(result).to_csv(
-                        abs_path + "\\hour_csv\\" + os.path.split(os.path.split(f_path)[0])[1] + "\\" + os.path.split(
-                            f_path)[1] + "\\" + file)
+                    save_path = abs_path + "\\hour_csv\\" + os.path.split(os.path.split(f_path)[0])[1] + "\\" +os.path.split(f_path)[1]
+                    if not os.path.exists(save_path):
+                        os.makedirs(save_path)
+                    pd.DataFrame(result).to_csv(save_path + "\\" + file)

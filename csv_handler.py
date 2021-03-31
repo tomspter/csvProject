@@ -49,25 +49,29 @@ if __name__ == '__main__':
 
     with open(abs_path + '\\point_data.json', encoding='UTF-8') as load_json:
         point_datas = json.load(load_json)
-        fig = plt.figure(num=1, figsize=(180, 90))
-        ax = fig.gca()
+        fig = plt.figure(num=1, figsize=(50, 40))
+        # ax = fig.add_subplot(211)
+        # ax2 = fig.add_subplot(212)
+        ax = plt.subplot(211)
+        ax2 = plt.subplot(212)
         for point_data in point_datas.items():
             key_list = list(dict(point_data[1]).keys())
-            # if str(point_data[0]) == "A1":
-            # hv_list = key_list[0:int(len(key_list) / 2)]
-            # lv_list = key_list[int(len(key_list) / 2) + 1:]
-            # ax.plot([datetime.strptime("".join(re.findall(r"-?[1-9]\d*", d)), '%Y%m%d').date() for d in hv_list], list(dict(point_data[1]).values())[0:int(len(key_list) / 2)], label=str(point_data[0]))
-            # ax.plot([datetime.strptime("".join(re.findall(r"-?[1-9]\d*", d)), '%Y%m%d').date() for d in lv_list], list(dict(point_data[1]).values())[int(len(key_list) / 2) + 1:], label=str(point_data[0]))
-            # else:
             t_data = [datetime.strptime("".join(re.findall(r"-?[1-9]\d*", d)), '%Y%m%d').date() for d in key_list]
-            ax.plot(t_data, list(dict(point_data[1]).values()), label=str(point_data[0]))
-            plt.annotate(str(point_data[0]), xy=(t_data[0], list(dict(point_data[1]).values())[0]),
-                         xytext=(datetime.strptime("20190825", '%Y%m%d'), list(dict(point_data[1]).values())[0]),
-                         arrowprops=dict(arrowstyle='->'))
+            if 'HV' in str(point_data[0]):
+                ax.plot(t_data, list(dict(point_data[1]).values()), label=str(point_data[0]))
+                ax.annotate(str(point_data[0]), xy=(t_data[0], list(dict(point_data[1]).values())[0]),
+                            xytext=(datetime.strptime("20190825", '%Y%m%d'), list(dict(point_data[1]).values())[0]),
+                            arrowprops=dict(arrowstyle='->'))
+            else:
+                ax2.plot(t_data, list(dict(point_data[1]).values()), label=str(point_data[0]))
+                ax2.annotate(str(point_data[0]), xy=(t_data[0], list(dict(point_data[1]).values())[0]),
+                            xytext=(datetime.strptime("20190825", '%Y%m%d'), list(dict(point_data[1]).values())[0]),
+                            arrowprops=dict(arrowstyle='->'))
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m/%d'))
         plt.gca().xaxis.set_major_locator(mdates.DayLocator())
         plt.gcf().autofmt_xdate()
-        plt.legend()
+        ax.legend()
+        ax2.legend()
         # plt.show()
         plt.savefig(abs_path + '\\pic.png')
-        cv2.imwrite(abs_path + '\\compression_pic.png', cv2.imread(abs_path + '\\pic.png'))
+        # cv2.imwrite(abs_path + '\\compression_pic.png', cv2.imread(abs_path + '\\pic.png'))
